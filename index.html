@@ -22,91 +22,6 @@
             touch-action: none;
         }
 
-        /* ===== 密码锁屏 ===== */
-        #lockScreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(13, 13, 13, 0.97);
-            z-index: 999999999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            backdrop-filter: blur(10px);
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-        #lockScreen.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-        #lockScreen .lock-box {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 16px;
-            padding: 40px 48px 36px;
-            max-width: 400px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.9);
-        }
-        #lockScreen .lock-box .lock-icon {
-            font-size: 48px;
-            margin-bottom: 8px;
-        }
-        #lockScreen .lock-box h2 {
-            color: #fff;
-            font-size: 20px;
-            font-weight: 400;
-            margin-bottom: 6px;
-        }
-        #lockScreen .lock-box .lock-sub {
-            color: #666;
-            font-size: 13px;
-            margin-bottom: 20px;
-        }
-        #lockScreen .lock-box .lock-input-group {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        #lockScreen .lock-box input[type="password"] {
-            background: #0d0d0d;
-            border: 1px solid #333;
-            color: #fff;
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 16px;
-            width: 160px;
-            outline: none;
-        }
-        #lockScreen .lock-box input[type="password"]:focus {
-            border-color: #666;
-        }
-        #lockScreen .lock-box .lock-btn {
-            background: #2a6b3a;
-            border: none;
-            color: #fff;
-            padding: 8px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s;
-        }
-        #lockScreen .lock-box .lock-btn:hover {
-            background: #3a8a4a;
-        }
-        #lockScreen .lock-box .lock-error {
-            color: #ff6b6b;
-            font-size: 12px;
-            margin-top: 12px;
-            min-height: 20px;
-        }
-
         .main-wrapper {
             display: flex;
             flex: 1;
@@ -796,6 +711,18 @@
             color: #ffa500;
             font-weight: bold;
         }
+        .info-overlay .info-box .info-content .credit {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid #333;
+            color: #666;
+            font-size: 11px;
+            text-align: center;
+        }
+        .info-overlay .info-box .info-content .credit span {
+            color: #ffa500;
+            font-weight: 500;
+        }
 
         .bg-upload-wrapper {
             position: relative;
@@ -1121,24 +1048,6 @@
                 font-size: 12px;
                 min-height: 60px;
             }
-            .lock-box {
-                padding: 28px 24px 28px !important;
-            }
-            .lock-box .lock-icon {
-                font-size: 36px !important;
-            }
-            .lock-box h2 {
-                font-size: 17px !important;
-            }
-            .lock-box input[type="password"] {
-                width: 120px !important;
-                font-size: 14px !important;
-                padding: 6px 10px !important;
-            }
-            .lock-box .lock-btn {
-                font-size: 12px !important;
-                padding: 6px 14px !important;
-            }
         }
 
         @media (max-width: 480px) {
@@ -1243,20 +1152,6 @@
 </head>
 <body>
 
-    <!-- ===== 密码锁屏 ===== -->
-    <div id="lockScreen">
-        <div class="lock-box">
-            <div class="lock-icon">🔒</div>
-            <h2>请输入密码</h2>
-            <div class="lock-sub">此工具受密码保护</div>
-            <div class="lock-input-group">
-                <input type="password" id="lockPassword" placeholder="输入密码..." autofocus>
-                <button class="lock-btn" id="lockBtn">解锁</button>
-            </div>
-            <div class="lock-error" id="lockError"></div>
-        </div>
-    </div>
-
     <div class="main-wrapper">
         <div class="content-area">
 
@@ -1355,7 +1250,7 @@
                 </div>
             </div>
 
-            <!-- ★★★ 说明弹窗（含授权说明） ★★★ -->
+            <!-- ★★★ 说明弹窗（含个人标记） ★★★ -->
             <div class="info-overlay" id="infoOverlay">
                 <div class="info-box">
                     <div class="info-title">
@@ -1367,14 +1262,18 @@
                         <p><span class="key">📌</span> 固定/取消固定字体列表</p>
                         <p><span class="key">🔄 滚轮</span> 切换字体</p>
                         <p><span class="key">⬆⬇ 方向键</span> 切换字体</p>
+                        <p><span class="key">📱 上下滑动</span> 切换字体（手机）</p>
                         <p><span class="key">✎</span> 编辑大段文字</p>
                         <p><span class="key">🖼 图片</span> 上传背景图</p>
                         <p><span class="key">⬇</span> 下载当前预览</p>
                         <p style="margin-top:14px;padding-top:12px;border-top:1px solid #333;color:#666;font-size:11px;line-height:1.8;">
                             📌 本工具所展示字体均为已购买商用授权的正版字体，<br>
-                            仅供预览参考，请勿下载或用于商业用途。
+                            仅供预览参考，请勿下载或用于商业用途。<br>
                             如需使用，请购买正版授权。
                         </p>
+                        <div class="credit">
+                            Made by <span>Zygarden</span> ✦ 2026
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1391,38 +1290,7 @@
     </div>
 
     <script>
-        // ★★★ 密码保护 ★★★
-        // ⚠️ 请修改下方 '123456' 为您想要的密码
-        var CORRECT_PASSWORD = '123456';
-
-        var lockScreen = document.getElementById('lockScreen');
-        var lockPassword = document.getElementById('lockPassword');
-        var lockBtn = document.getElementById('lockBtn');
-        var lockError = document.getElementById('lockError');
-
-        function tryUnlock() {
-            var input = lockPassword.value.trim();
-            if (input === CORRECT_PASSWORD) {
-                lockScreen.classList.add('hidden');
-                lockError.textContent = '';
-                lockPassword.value = '';
-                setTimeout(function() { document.getElementById('textInput').focus(); }, 300);
-            } else {
-                lockError.textContent = '❌ 密码错误，请重试';
-                lockPassword.value = '';
-                lockPassword.focus();
-                lockPassword.style.borderColor = '#ff6b6b';
-                setTimeout(function() { lockPassword.style.borderColor = ''; }, 500);
-            }
-        }
-
-        lockBtn.onclick = tryUnlock;
-        lockPassword.onkeydown = function(e) {
-            if (e.key === 'Enter') tryUnlock();
-        };
-        setTimeout(function() { lockPassword.focus(); }, 100);
-
-        // ★★★ 字体数据（按最新清单精简） ★★★
+        // ★★★ 字体数据 ★★★
         var FONT_DATA = {
             '兵克字体': [
                 { name: '吉祥如意体', file: '字体文件/兵克字体/吉祥如意体.ttf' },
@@ -1608,6 +1476,8 @@
             D.folderPanel.classList.add('active');
             D.folderOverlay.classList.add('active');
             setupTouchSwipe();
+            // 手机端通过点击预览区上下半区切换字体
+            setupTapSwitch();
         }
 
         // ★★★ 手机触摸滑动切换字体 ★★★
@@ -1628,7 +1498,6 @@
                 if (Math.abs(deltaY) > 20 && Math.abs(deltaY) > Math.abs(deltaX)) {
                     S.isSwiping = true;
                     e.preventDefault();
-                    // 显示提示
                     var direction = deltaY > 0 ? '↓' : '↑';
                     var font = S.fonts[S.index];
                     if (font) {
@@ -1638,7 +1507,10 @@
             }, { passive: false });
 
             container.addEventListener('touchend', function(e) {
-                if (!S.isSwiping) return;
+                if (!S.isSwiping) {
+                    // 如果不是滑动，检查是否是点击上半区或下半区
+                    return;
+                }
                 if (!S.fonts.length || !S.hasSelected) return;
                 var touch = e.changedTouches[0];
                 var deltaY = touch.clientY - S.touchStartY;
@@ -1651,7 +1523,6 @@
                     if (font) {
                         D.currentFontName.textContent = font.name;
                         forceLoad(target);
-                        // 震动反馈（如果支持）
                         if (navigator.vibrate) navigator.vibrate(10);
                     }
                 } else {
@@ -1660,6 +1531,46 @@
                 }
                 S.isSwiping = false;
             }, { passive: true });
+        }
+
+        // ★★★ 手机点击上半区/下半区切换字体 ★★★
+        function setupTapSwitch() {
+            var container = D.previewContainer;
+            container.addEventListener('click', function(e) {
+                // 检查是否点击的是预览内容本身或背景
+                var rect = container.getBoundingClientRect();
+                var y = e.clientY - rect.top;
+                var height = rect.height;
+                
+                if (!S.fonts.length || !S.hasSelected) return;
+                if (e.target.closest('.bg-upload-wrapper') || e.target.closest('.download-wrapper') || 
+                    e.target.closest('.mask-controls') || e.target.closest('.reset-btn')) {
+                    return;
+                }
+                
+                // 上半区点击 → 上一个字体，下半区点击 → 下一个字体
+                if (y < height * 0.4) {
+                    // 上一个
+                    var target = S.index - 1;
+                    if (target < 0) target = S.fonts.length - 1;
+                    var font = S.fonts[target];
+                    if (font) {
+                        D.currentFontName.textContent = font.name;
+                        forceLoad(target);
+                        if (navigator.vibrate) navigator.vibrate(10);
+                    }
+                } else if (y > height * 0.6) {
+                    // 下一个
+                    var target = S.index + 1;
+                    if (target >= S.fonts.length) target = 0;
+                    var font = S.fonts[target];
+                    if (font) {
+                        D.currentFontName.textContent = font.name;
+                        forceLoad(target);
+                        if (navigator.vibrate) navigator.vibrate(10);
+                    }
+                }
+            });
         }
 
         function buildFolderList() {
@@ -2182,7 +2093,9 @@
         console.log('📌 点击📌固定字体列表到右侧');
         console.log('📌 鼠标悬停侧栏字体预览效果，点击切换');
         console.log('📌 手机上下滑动可切换字体');
+        console.log('📌 手机点击上半区切换上一个，下半区切换下一个');
         console.log('📌 点击「对比模式」跳转到对比模式.html');
+        console.log('✨ Made by Zygarden');
     </script>
 </body>
 </html>
