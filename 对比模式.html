@@ -1,616 +1,568 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>字体对比模式</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='100' y2='100'><stop offset='0' stop-color='%236366f1'/><stop offset='1' stop-color='%23ec4899'/></linearGradient></defs><text y='.85em' font-size='78' fill='url(%23g)' font-family='system-ui, sans-serif' font-weight='700'>字</text></svg>">
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#f8f8f8;
-  --card-bg:#ffffff;
-  --text-color:#000000;
-  --border:#dddddd;
-  --name-bg:#e9edf4;
-  --grid-color:#c8c8d4;
-}
-.dark-mode{
-  --bg:#1c1c1c;
-  --card-bg:#2b2b2b;
-  --text-color:#ffffff;
-  --border:#444444;
-  --name-bg:#424854;
-  --grid-color:#4a4a5a;
-}
-body{
-  padding:30px;
-  background:var(--bg);
-  transition:0.3s background;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-}
-.top-bar{
-  display:flex;
-  gap:16px;
-  align-items:center;
-  margin-bottom:16px;
-  flex-wrap:wrap;
-}
-.back-btn{
-  padding:0 14px;
-  height:46px;
-  border:1px solid var(--border);
-  border-radius:6px;
-  cursor:pointer;
-  background:var(--card-bg);
-  color:var(--text-color);
-  font-size:15px;
-  text-decoration:none;
-  display:flex;
-  align-items:center;
-}
-.search-box{
-  flex:1;
-  min-width:280px;
-}
-#inputText{
-  width:100%;
-  height:46px;
-  font-size:18px;
-  padding:0 16px;
-  border:1px solid var(--border);
-  border-radius:6px;
-  outline:none;
-  background:var(--card-bg);
-  color:var(--text-color);
-}
-.ctrl-btn{
-  height:46px;
-  padding:0 16px;
-  border:1px solid var(--border);
-  border-radius:6px;
-  cursor:pointer;
-  background:var(--card-bg);
-  color:var(--text-color);
-  font-size:15px;
-}
-.slider-group{
-  display:flex;
-  flex-wrap:wrap;
-  gap:20px;
-  align-items:center;
-  margin-bottom:14px;
-  padding:12px 16px;
-  background:var(--card-bg);
-  border-radius:8px;
-  border:1px solid var(--border);
-}
-.slider-item{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-.slider-item label{
-  color:var(--text-color);
-  white-space:nowrap;
-}
-.slider-item input[type="range"]{
-  width:140px;
-}
-#previewWrap{
-  margin-top:10px;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>字体对比 · 精校版</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='100' y2='100'><stop offset='0' stop-color='%236366f1'/><stop offset='1' stop-color='%23ec4899'/></linearGradient></defs><text y='.85em' font-size='78' fill='url(%23g)' font-family='system-ui, sans-serif' font-weight='700'>字</text></svg>">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f8f8f8;
+      --card-bg: #ffffff;
+      --text-color: #000000;
+      --border: #dddddd;
+      --name-bg: #e9edf4;
+      --grid-color: #c8c8d4;
+    }
+    .dark-mode {
+      --bg: #1c1c1c;
+      --card-bg: #2b2b2b;
+      --text-color: #ffffff;
+      --border: #444444;
+      --name-bg: #424854;
+      --grid-color: #4a4a5a;
+    }
+    body {
+      padding: 30px;
+      background: var(--bg);
+      transition: 0.3s background;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    }
+    .top-bar {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .back-btn {
+      padding: 0 14px;
+      height: 46px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      background: var(--card-bg);
+      color: var(--text-color);
+      font-size: 15px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+    .search-box {
+      flex: 1;
+      min-width: 280px;
+    }
+    #inputText {
+      width: 100%;
+      height: 46px;
+      font-size: 18px;
+      padding: 0 16px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      outline: none;
+      background: var(--card-bg);
+      color: var(--text-color);
+    }
+    .ctrl-btn {
+      height: 46px;
+      padding: 0 16px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      background: var(--card-bg);
+      color: var(--text-color);
+      font-size: 15px;
+    }
+    .slider-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 14px;
+      padding: 12px 16px;
+      background: var(--card-bg);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .slider-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .slider-item label {
+      color: var(--text-color);
+      white-space: nowrap;
+    }
+    .slider-item input[type="range"] {
+      width: 140px;
+    }
+    #previewWrap {
+      margin-top: 10px;
+    }
+    .layout-square {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 180px);
+      gap: 24px;
+    }
+    .layout-rect {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 360px);
+      gap: 28px;
+    }
+    .layout-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      align-items: stretch;
+    }
+    .item-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-color);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .mi-grid-on .item-card {
+      background-image:
+        linear-gradient(to right, var(--grid-color) 0 1px, transparent 0),
+        linear-gradient(to bottom, var(--grid-color) 0 1px, transparent 0),
+        linear-gradient(to right, var(--grid-color) 0 1px, transparent 0),
+        linear-gradient(to bottom, var(--grid-color) 0 1px, transparent 0),
+        repeating-linear-gradient(to right, var(--grid-color) 0 1px, transparent 0 6px, var(--grid-color) 6px 7px, transparent 7px 13px),
+        repeating-linear-gradient(to bottom, var(--grid-color) 0 1px, transparent 0 6px, var(--grid-color) 6px 7px, transparent 7px 13px),
+        linear-gradient(45deg, transparent calc(50% - 0.5px), var(--grid-color) calc(50% - 0.5px), var(--grid-color) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+        linear-gradient(135deg, transparent calc(50% - 0.5px), var(--grid-color) calc(50% - 0.5px), var(--grid-color) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+      background-size: 92% 92%, 92% 92%, 100% 100%, 100% 100%, 92% 92%, 92% 92%, 100% 100%, 100% 100%;
+      background-position: 4% 4%, 4% 4%, 0 0, 0 0, 4% 50%, 50% 4%, 0 0, 0 0;
+      background-repeat: no-repeat;
+    }
+    .preview-text-wrap {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    .layout-square .item-card { width: 180px; height: 210px; }
+    .layout-rect .item-card { width: 360px; height: 190px; }
+    .layout-row .item-card { min-width: 180px; height: 190px; }
+    .font-name-row {
+      width: 100%;
+      height: 16px;
+      background: var(--name-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    .font-name {
+      font-size: 13px;
+      font-weight: 200;
+      color: var(--text-color);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      line-height: 1;
+    }
+    .download-btn {
+      position: absolute;
+      right: 8px;
+      width: 16px;
+      height: 16px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      background: #5578cc;
+      color: #fff;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+  </style>
 
-.layout-square{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,180px);
-  gap:24px;
-}
-.layout-rect{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,360px);
-  gap:28px;
-}
-.layout-row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:28px;
-  align-items:stretch;
-}
+  <!-- 字体定义：严格按照最新清单 -->
+  <style>
+    /* ===== 兵克字体 ===== */
+    @font-face { font-family: "吉祥如意体"; src: url("字体文件/兵克字体/吉祥如意体.ttf"); }
+    @font-face { font-family: "兵克笨笨体"; src: url("字体文件/兵克字体/兵克笨笨体.ttf"); }
+    @font-face { font-family: "兵克美味体"; src: url("字体文件/兵克字体/兵克美味体.ttf"); }
+    @font-face { font-family: "兵克自在宋"; src: url("字体文件/兵克字体/兵克自在宋.ttf"); }
+    @font-face { font-family: "兵克臻美隶"; src: url("字体文件/兵克字体/兵克臻美隶.ttf"); }
+    @font-face { font-family: "兵克英雄体"; src: url("字体文件/兵克字体/兵克英雄体.ttf"); }
+    @font-face { font-family: "兵克躺平体"; src: url("字体文件/兵克字体/兵克躺平体.ttf"); }
+    @font-face { font-family: "兵克轻柔体"; src: url("字体文件/兵克字体/兵克轻柔体.ttf"); }
+    @font-face { font-family: "兵克逍遥体"; src: url("字体文件/兵克字体/兵克逍遥体.ttf"); }
+    @font-face { font-family: "兵克锐黑体"; src: url("字体文件/兵克字体/兵克锐黑体.ttf"); }
+    @font-face { font-family: "兵克雷霆体"; src: url("字体文件/兵克字体/兵克雷霆体.ttf"); }
+    @font-face { font-family: "兵克青年体"; src: url("字体文件/兵克字体/兵克青年体.ttf"); }
+    @font-face { font-family: "兵克高级黑"; src: url("字体文件/兵克字体/兵克高级黑.ttf"); }
+    @font-face { font-family: "兵克高雅宋"; src: url("字体文件/兵克字体/兵克高雅宋.ttf"); }
+    @font-face { font-family: "兵克朴素楷"; src: url("字体文件/兵克字体/兵克朴素楷.ttf"); }
+    @font-face { font-family: "兵克柔书体"; src: url("字体文件/兵克字体/兵克柔书体.ttf"); }
+    @font-face { font-family: "兵克柔黑体"; src: url("字体文件/兵克字体/兵克柔黑体.ttf"); }
+    @font-face { font-family: "兵克楷黑体"; src: url("字体文件/兵克字体/兵克楷黑体.ttf"); }
+    @font-face { font-family: "兵克泰山体"; src: url("字体文件/兵克字体/兵克泰山体.ttf"); }
+    @font-face { font-family: "兵克淘气体"; src: url("字体文件/兵克字体/兵克淘气体.ttf"); }
+    @font-face { font-family: "兵克清秀体"; src: url("字体文件/兵克字体/兵克清秀体.ttf"); }
+    @font-face { font-family: "兵克清闲体"; src: url("字体文件/兵克字体/兵克清闲体.ttf"); }
+    @font-face { font-family: "兵克烟云体"; src: url("字体文件/兵克字体/兵克烟云体.ttf"); }
+    @font-face { font-family: "兵克热烈体"; src: url("字体文件/兵克字体/兵克热烈体.ttf"); }
+    @font-face { font-family: "兵克甜心圆"; src: url("字体文件/兵克字体/兵克甜心圆.ttf"); }
+    @font-face { font-family: "兵克真给隶"; src: url("字体文件/兵克字体/兵克真给隶.ttf"); }
+    @font-face { font-family: "兵克稚趣体"; src: url("字体文件/兵克字体/兵克稚趣体.ttf"); }
+    @font-face { font-family: "兵克侠客体"; src: url("字体文件/兵克字体/兵克侠客体.ttf"); }
+    @font-face { font-family: "兵克元气体"; src: url("字体文件/兵克字体/兵克元气体.ttf"); }
+    @font-face { font-family: "兵克创想黑"; src: url("字体文件/兵克字体/兵克创想黑.ttf"); }
+    @font-face { font-family: "兵克厚黑体"; src: url("字体文件/兵克字体/兵克厚黑体.ttf"); }
+    @font-face { font-family: "兵克古意宋"; src: url("字体文件/兵克字体/兵克古意宋.ttf"); }
+    @font-face { font-family: "兵克古风体"; src: url("字体文件/兵克字体/兵克古风体.ttf"); }
+    @font-face { font-family: "兵克喜刷刷"; src: url("字体文件/兵克字体/兵克喜刷刷.ttf"); }
+    @font-face { font-family: "兵克坚黑体"; src: url("字体文件/兵克字体/兵克坚黑体.ttf"); }
+    @font-face { font-family: "兵克威武体"; src: url("字体文件/兵克字体/兵克威武体.ttf"); }
+    @font-face { font-family: "兵克战甲体"; src: url("字体文件/兵克字体/兵克战甲体.ttf"); }
+    @font-face { font-family: "兵克有点逗"; src: url("字体文件/兵克字体/兵克有点逗.ttf"); }
+    @font-face { font-family: "兵克未来体"; src: url("字体文件/兵克字体/兵克未来体.ttf"); }
 
-.item-card{
-  background:var(--card-bg);
-  border:1px solid var(--border);
-  border-radius:6px;
-  color:var(--text-color);
-  text-align:center;
-  position:relative;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-}
+    /* ===== 演示字体 ===== */
+    @font-face { font-family: "演示霸榜"; src: url("字体文件/演示字体/演示霸榜.ttf"); }
+    @font-face { font-family: "演示青年黑"; src: url("字体文件/演示字体/演示青年黑.ttf"); }
+    @font-face { font-family: "演示青花楷"; src: url("字体文件/演示字体/演示青花楷.ttf"); }
+    @font-face { font-family: "演示非宋"; src: url("字体文件/演示字体/演示非宋.ttf"); }
+    @font-face { font-family: "演示魁本楷书"; src: url("字体文件/演示字体/演示魁本楷书.ttf"); }
+    @font-face { font-family: "演示鲲榜"; src: url("字体文件/演示字体/演示鲲榜.ttf"); }
+    @font-face { font-family: "鸿雷顿峰简体"; src: url("字体文件/演示字体/鸿雷顿峰简体.ttf"); }
+    @font-face { font-family: "演示经集楷"; src: url("字体文件/演示字体/演示经集楷.ttf"); }
+    @font-face { font-family: "演示舍得楷"; src: url("字体文件/演示字体/演示舍得楷.ttf"); }
+    @font-face { font-family: "演示芳华圆-普"; src: url("字体文件/演示字体/演示芳华圆-普.ttf"); }
+    @font-face { font-family: "演示芳华圆-粗"; src: url("字体文件/演示字体/演示芳华圆-粗.ttf"); }
+    @font-face { font-family: "演示芳华圆-细"; src: url("字体文件/演示字体/演示芳华圆-细.ttf"); }
+    @font-face { font-family: "演示芳华圆-超细"; src: url("字体文件/演示字体/演示芳华圆-超细.ttf"); }
+    @font-face { font-family: "演示落月楷"; src: url("字体文件/演示字体/演示落月楷.ttf"); }
+    @font-face { font-family: "演示诗歌宋"; src: url("字体文件/演示字体/演示诗歌宋.ttf"); }
+    @font-face { font-family: "演示踏歌行"; src: url("字体文件/演示字体/演示踏歌行.ttf"); }
+    @font-face { font-family: "演示追光隶"; src: url("字体文件/演示字体/演示追光隶.ttf"); }
+    @font-face { font-family: "演示通义楷"; src: url("字体文件/演示字体/演示通义楷.ttf"); }
+    @font-face { font-family: "演示金刚体"; src: url("字体文件/演示字体/演示金刚体.ttf"); }
+    @font-face { font-family: "演示金字招牌"; src: url("字体文件/演示字体/演示金字招牌.ttf"); }
+    @font-face { font-family: "演示汉楷宋"; src: url("字体文件/演示字体/演示汉楷宋.ttf"); }
+    @font-face { font-family: "演示流云楷"; src: url("字体文件/演示字体/演示流云楷.ttf"); }
+    @font-face { font-family: "演示温暖隶"; src: url("字体文件/演示字体/演示温暖隶.ttf"); }
+    @font-face { font-family: "演示白菜体"; src: url("字体文件/演示字体/演示白菜体.ttf"); }
+    @font-face { font-family: "演示真楷"; src: url("字体文件/演示字体/演示真楷.ttf"); }
+    @font-face { font-family: "演示祥云"; src: url("字体文件/演示字体/演示祥云.ttf"); }
+    @font-face { font-family: "演示秀宋-中粗"; src: url("字体文件/演示字体/演示秀宋-中粗.ttf"); }
+    @font-face { font-family: "演示秀宋-普"; src: url("字体文件/演示字体/演示秀宋-普.ttf"); }
+    @font-face { font-family: "演示秀宋-极粗"; src: url("字体文件/演示字体/演示秀宋-极粗.ttf"); }
+    @font-face { font-family: "演示秀宋-细"; src: url("字体文件/演示字体/演示秀宋-细.ttf"); }
+    @font-face { font-family: "演示秀宋-超细"; src: url("字体文件/演示字体/演示秀宋-超细.ttf"); }
+    @font-face { font-family: "演示秋鸿楷"; src: url("字体文件/演示字体/演示秋鸿楷.ttf"); }
+    @font-face { font-family: "演示童真体"; src: url("字体文件/演示字体/演示童真体.ttf"); }
+    @font-face { font-family: "演示复古基本宋"; src: url("字体文件/演示字体/演示复古基本宋.ttf"); }
+    @font-face { font-family: "演示夏行楷"; src: url("字体文件/演示字体/演示夏行楷.ttf"); }
+    @font-face { font-family: "演示多福体"; src: url("字体文件/演示字体/演示多福体.ttf"); }
+    @font-face { font-family: "演示天真宋"; src: url("字体文件/演示字体/演示天真宋.ttf"); }
+    @font-face { font-family: "演示宁缺体-怀旧版"; src: url("字体文件/演示字体/演示宁缺体-怀旧版.ttf"); }
+    @font-face { font-family: "演示宁缺体"; src: url("字体文件/演示字体/演示宁缺体.ttf"); }
+    @font-face { font-family: "演示少年行"; src: url("字体文件/演示字体/演示少年行.ttf"); }
+    @font-face { font-family: "演示开门隶"; src: url("字体文件/演示字体/演示开门隶.ttf"); }
+    @font-face { font-family: "演示心情体"; src: url("字体文件/演示字体/演示心情体.ttf"); }
+    @font-face { font-family: "演示悠然小楷"; src: url("字体文件/演示字体/演示悠然小楷.ttf"); }
+    @font-face { font-family: "演示文艺宋"; src: url("字体文件/演示字体/演示文艺宋.ttf"); }
+    @font-face { font-family: "演示春风楷"; src: url("字体文件/演示字体/演示春风楷.ttf"); }
+    @font-face { font-family: "演示晚风楷"; src: url("字体文件/演示字体/演示晚风楷.ttf"); }
+    @font-face { font-family: "波西米亚狂想黑"; src: url("字体文件/演示字体/波西米亚狂想黑.ttf"); }
+    @font-face { font-family: "演示云顶黑"; src: url("字体文件/演示字体/演示云顶黑.ttf"); }
+    @font-face { font-family: "演示佛系体"; src: url("字体文件/演示字体/演示佛系体.ttf"); }
+    @font-face { font-family: "演示光华楷"; src: url("字体文件/演示字体/演示光华楷.ttf"); }
+    @font-face { font-family: "演示写意楷"; src: url("字体文件/演示字体/演示写意楷.ttf"); }
+    @font-face { font-family: "演示决胜体"; src: url("字体文件/演示字体/演示决胜体.ttf"); }
+    @font-face { font-family: "演示刀刻黑"; src: url("字体文件/演示字体/演示刀刻黑.ttf"); }
+    @font-face { font-family: "演示创黑"; src: url("字体文件/演示字体/演示创黑.ttf"); }
+    @font-face { font-family: "演示创黑FLY"; src: url("字体文件/演示字体/演示创黑FLY.ttf"); }
+    @font-face { font-family: "演示古风宋"; src: url("字体文件/演示字体/演示古风宋.ttf"); }
+    @font-face { font-family: "演示古风宋温润版"; src: url("字体文件/演示字体/演示古风宋温润版.ttf"); }
+    @font-face { font-family: "演示墩墩黑"; src: url("字体文件/演示字体/演示墩墩黑.ttf"); }
 
-/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
-/* 标准米字格：外框 + 横中线 + 竖中线 + 两条斜线  */
-/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
-.mi-grid-on .item-card {
-  background-image:
-    /* 外框（上下左右四条边） */
-    linear-gradient(to right, var(--grid-color) 0 1px, transparent 0),
-    linear-gradient(to bottom, var(--grid-color) 0 1px, transparent 0),
-    linear-gradient(to right, var(--grid-color) 0 1px, transparent 0),
-    linear-gradient(to bottom, var(--grid-color) 0 1px, transparent 0),
-    /* 横中线（水平虚线） */
-    repeating-linear-gradient(
-      to right,
-      var(--grid-color) 0 1px,
-      transparent 0 6px,
-      var(--grid-color) 6px 7px,
-      transparent 7px 13px
-    ),
-    /* 竖中线（垂直虚线） */
-    repeating-linear-gradient(
-      to bottom,
-      var(--grid-color) 0 1px,
-      transparent 0 6px,
-      var(--grid-color) 6px 7px,
-      transparent 7px 13px
-    ),
-    /* 斜线（撇 / 捺） */
-    linear-gradient(45deg, transparent calc(50% - 0.5px), var(--grid-color) calc(50% - 0.5px), var(--grid-color) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
-    linear-gradient(135deg, transparent calc(50% - 0.5px), var(--grid-color) calc(50% - 0.5px), var(--grid-color) calc(50% + 0.5px), transparent calc(50% + 0.5px));
-  background-size:
-    92% 92%, 92% 92%,
-    100% 100%, 100% 100%,
-    92% 92%,
-    92% 92%,
-    100% 100%, 100% 100%;
-  background-position:
-    4% 4%, 4% 4%,
-    0 0, 0 0,
-    4% 50%,
-    50% 4%,
-    0 0, 0 0;
-  background-repeat: no-repeat;
-}
-/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
-/* 米字格结束                                        */
-/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
-
-.preview-text-wrap{
-  flex:1;
-  width:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative;
-  z-index:1;
-}
-.layout-square .item-card{
-  width:180px;
-  height:210px;
-}
-.layout-rect .item-card{
-  width:360px;
-  height:190px;
-}
-.layout-row .item-card{
-  min-width:180px;
-  height:190px;
-}
-.font-name-row{
-  width:100%;
-  height:16px;
-  background:var(--name-bg);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative;
-  z-index:1;
-}
-.font-name{
-  font-size:13px;
-  font-weight:200;
-  color:var(--text-color);
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  line-height:1;
-}
-.download-btn{
-  position:absolute;
-  right:8px;
-  width:16px;
-  height:16px;
-  border:none;
-  border-radius:3px;
-  cursor:pointer;
-  background:#5578cc;
-  color:#fff;
-  font-size:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:0;
-}
-</style>
-
-<style>
-@font-face {font-family:"兵克侠客体";src:url("字体文件/兵克字体/兵克侠客体.ttf");}
-@font-face {font-family:"兵克元气体";src:url("字体文件/兵克字体/兵克元气体.ttf");}
-@font-face {font-family:"兵克创想黑";src:url("字体文件/兵克字体/兵克创想黑.ttf");}
-@font-face {font-family:"兵克厚黑体";src:url("字体文件/兵克字体/兵克厚黑体.ttf");}
-@font-face {font-family:"兵克古意宋";src:url("字体文件/兵克字体/兵克古意宋.ttf");}
-@font-face {font-family:"兵克古风体";src:url("字体文件/兵克字体/兵克古风体.ttf");}
-@font-face {font-family:"兵克喜刷刷";src:url("字体文件/兵克字体/兵克喜刷刷.ttf");}
-@font-face {font-family:"兵克坚黑体";src:url("字体文件/兵克字体/兵克坚黑体.ttf");}
-@font-face {font-family:"兵克威武体";src:url("字体文件/兵克字体/兵克威武体.ttf");}
-@font-face {font-family:"兵克战甲体";src:url("字体文件/兵克字体/兵克战甲体.ttf");}
-@font-face {font-family:"兵克星耀体";src:url("字体文件/兵克字体/兵克星耀体.ttf");}
-@font-face {font-family:"兵克有点逗";src:url("字体文件/兵克字体/兵克有点逗.ttf");}
-@font-face {font-family:"兵克未来体";src:url("字体文件/兵克字体/兵克未来体.ttf");}
-@font-face {font-family:"兵克朴素楷";src:url("字体文件/兵克字体/兵克朴素楷.ttf");}
-@font-face {font-family:"兵克柔书体";src:url("字体文件/兵克字体/兵克柔书体.ttf");}
-@font-face {font-family:"兵克柔黑体";src:url("字体文件/兵克字体/兵克柔黑体.ttf");}
-@font-face {font-family:"兵克楷黑体";src:url("字体文件/兵克字体/兵克楷黑体.ttf");}
-@font-face {font-family:"兵克泰山体";src:url("字体文件/兵克字体/兵克泰山体.ttf");}
-@font-face {font-family:"兵克淘气体";src:url("字体文件/兵克字体/兵克淘气体.ttf");}
-@font-face {font-family:"兵克清秀体";src:url("字体文件/兵克字体/兵克清秀体.ttf");}
-@font-face {font-family:"兵克清闲体";src:url("字体文件/兵克字体/兵克清闲体.ttf");}
-@font-face {font-family:"兵克烟云体";src:url("字体文件/兵克字体/兵克烟云体.ttf");}
-@font-face {font-family:"兵克热烈体";src:url("字体文件/兵克字体/兵克热烈体.ttf");}
-@font-face {font-family:"兵克甜心圆";src:url("字体文件/兵克字体/兵克甜心圆.ttf");}
-@font-face {font-family:"兵克真给隶";src:url("字体文件/兵克字体/兵克真给隶.ttf");}
-@font-face {font-family:"兵克稚趣体";src:url("字体文件/兵克字体/兵克稚趣体.ttf");}
-@font-face {font-family:"兵克笨笨体";src:url("字体文件/兵克字体/兵克笨笨体.ttf");}
-@font-face {font-family:"兵克美味体";src:url("字体文件/兵克字体/兵克美味体.ttf");}
-@font-face {font-family:"兵克自在宋";src:url("字体文件/兵克字体/兵克自在宋.ttf");}
-@font-face {font-family:"兵克臻美隶";src:url("字体文件/兵克字体/兵克臻美隶.ttf");}
-@font-face {font-family:"兵克英雄体";src:url("字体文件/兵克字体/兵克英雄体.ttf");}
-@font-face {font-family:"兵克行江湖";src:url("字体文件/兵克字体/兵克行江湖.ttf");}
-@font-face {font-family:"兵克躺平体";src:url("字体文件/兵克字体/兵克躺平体.ttf");}
-@font-face {font-family:"兵克轻柔体";src:url("字体文件/兵克字体/兵克轻柔体.ttf");}
-@font-face {font-family:"兵克逍遥体";src:url("字体文件/兵克字体/兵克逍遥体.ttf");}
-@font-face {font-family:"兵克锐黑体";src:url("字体文件/兵克字体/兵克锐黑体.ttf");}
-@font-face {font-family:"兵克雷霆体";src:url("字体文件/兵克字体/兵克雷霆体.ttf");}
-@font-face {font-family:"兵克青年体";src:url("字体文件/兵克字体/兵克青年体.ttf");}
-@font-face {font-family:"兵克高级黑";src:url("字体文件/兵克字体/兵克高级黑.ttf");}
-@font-face {font-family:"兵克高雅宋";src:url("字体文件/兵克字体/兵克高雅宋.ttf");}
-@font-face {font-family:"吉祥如意体";src:url("字体文件/兵克字体/吉祥如意体.ttf");}
-
-@font-face {font-family:"鸿雷元宋简体";src:url("字体文件/鸿雷字体/鸿雷元宋简体.ttf");}
-@font-face {font-family:"鸿雷劲书简体";src:url("字体文件/鸿雷字体/鸿雷劲书简体.ttf");}
-@font-face {font-family:"鸿雷字记-手写百样字集";src:url("字体文件/鸿雷字体/鸿雷字记-手写百样字集.ttf");}
-@font-face {font-family:"鸿雷文艺简体";src:url("字体文件/鸿雷字体/鸿雷文艺简体.ttf");}
-@font-face {font-family:"鸿雷江湖简体";src:url("字体文件/鸿雷字体/鸿雷江湖简体.ttf");}
-@font-face {font-family:"鸿雷石趣体";src:url("字体文件/鸿雷字体/鸿雷石趣体.ttf");}
-@font-face {font-family:"鸿雷竹林简体";src:url("字体文件/鸿雷字体/鸿雷竹林简体.ttf");}
-@font-face {font-family:"鸿雷舒金体（简+繁）";src:url("字体文件/鸿雷字体/鸿雷舒金体（简+繁）.ttf");}
-@font-face {font-family:"鸿雷顿峰简体";src:url("字体文件/鸿雷字体/鸿雷顿峰简体.ttf");}
-
-@font-face {font-family:"波西米亚狂想黑";src:url("字体文件/演示字体/波西米亚狂想黑.ttf");}
-@font-face {font-family:"演示云顶黑";src:url("字体文件/演示字体/演示云顶黑.ttf");}
-@font-face {font-family:"演示佛系体";src:url("字体文件/演示字体/演示佛系体.ttf");}
-@font-face {font-family:"演示光华楷";src:url("字体文件/演示字体/演示光华楷.ttf");}
-@font-face {font-family:"演示光芒体";src:url("字体文件/演示字体/演示光芒体.ttf");}
-@font-face {font-family:"演示写意楷";src:url("字体文件/演示字体/演示写意楷.ttf");}
-@font-face {font-family:"演示决胜体";src:url("字体文件/演示字体/演示决胜体.ttf");}
-@font-face {font-family:"演示刀刻黑";src:url("字体文件/演示字体/演示刀刻黑.ttf");}
-@font-face {font-family:"演示创黑";src:url("字体文件/演示字体/演示创黑.ttf");}
-@font-face {font-family:"演示创黑FLY";src:url("字体文件/演示字体/演示创黑FLY.ttf");}
-@font-face {font-family:"演示古风宋";src:url("字体文件/演示字体/演示古风宋.ttf");}
-@font-face {font-family:"演示古风宋温润版";src:url("字体文件/演示字体/演示古风宋温润版.ttf");}
-@font-face {font-family:"演示墩墩黑";src:url("字体文件/演示字体/演示墩墩黑.ttf");}
-@font-face {font-family:"演示复古基本宋";src:url("字体文件/演示字体/演示复古基本宋.ttf");}
-@font-face {font-family:"演示夏行楷";src:url("字体文件/演示字体/演示夏行楷.ttf");}
-@font-face {font-family:"演示多福体";src:url("字体文件/演示字体/演示多福体.ttf");}
-@font-face {font-family:"演示天真宋";src:url("字体文件/演示字体/演示天真宋.ttf");}
-@font-face {font-family:"演示宁缺体-怀旧版";src:url("字体文件/演示字体/演示宁缺体-怀旧版.ttf");}
-@font-face {font-family:"演示宁缺体";src:url("字体文件/演示字体/演示宁缺体.ttf");}
-@font-face {font-family:"演示少年行";src:url("字体文件/演示字体/演示少年行.ttf");}
-@font-face {font-family:"演示开门隶";src:url("字体文件/演示字体/演示开门隶.ttf");}
-@font-face {font-family:"演示心情体";src:url("字体文件/演示字体/演示心情体.ttf");}
-@font-face {font-family:"演示悠然小楷";src:url("字体文件/演示字体/演示悠然小楷.ttf");}
-@font-face {font-family:"演示拙黑";src:url("字体文件/演示字体/演示拙黑.ttf");}
-@font-face {font-family:"演示文艺宋";src:url("字体文件/演示字体/演示文艺宋.ttf");}
-@font-face {font-family:"演示新手书";src:url("字体文件/演示字体/演示新手书.ttf");}
-@font-face {font-family:"演示春风楷";src:url("字体文件/演示字体/演示春风楷.ttf");}
-@font-face {font-family:"演示晚风楷";src:url("字体文件/演示字体/演示晚风楷.ttf");}
-@font-face {font-family:"演示汉楷宋";src:url("字体文件/演示字体/演示汉楷宋.ttf");}
-@font-face {font-family:"演示流云楷";src:url("字体文件/演示字体/演示流云楷.ttf");}
-@font-face {font-family:"演示温暖隶";src:url("字体文件/演示字体/演示温暖隶.ttf");}
-@font-face {font-family:"演示白菜体";src:url("字体文件/演示字体/演示白菜体.ttf");}
-@font-face {font-family:"演示真楷";src:url("字体文件/演示字体/演示真楷.ttf");}
-@font-face {font-family:"演示祥云";src:url("字体文件/演示字体/演示祥云.ttf");}
-@font-face {font-family:"演示秀宋-中粗";src:url("字体文件/演示字体/演示秀宋-中粗.ttf");}
-@font-face {font-family:"演示秀宋-普";src:url("字体文件/演示字体/演示秀宋-普.ttf");}
-@font-face {font-family:"演示秀宋-极粗";src:url("字体文件/演示字体/演示秀宋-极粗.ttf");}
-@font-face {font-family:"演示秀宋-细";src:url("字体文件/演示字体/演示秀宋-细.ttf");}
-@font-face {font-family:"演示秀宋-超细";src:url("字体文件/演示字体/演示秀宋-超细.ttf");}
-@font-face {font-family:"演示秋鸿楷";src:url("字体文件/演示字体/演示秋鸿楷.ttf");}
-@font-face {font-family:"演示童真体";src:url("字体文件/演示字体/演示童真体.ttf");}
-@font-face {font-family:"演示经集楷";src:url("字体文件/演示字体/演示经集楷.ttf");}
-@font-face {font-family:"演示综艺黑";src:url("字体文件/演示字体/演示综艺黑.ttf");}
-@font-face {font-family:"演示舍得楷";src:url("字体文件/演示字体/演示舍得楷.ttf");}
-@font-face {font-family:"演示芳华圆-普";src:url("字体文件/演示字体/演示芳华圆-普.ttf");}
-@font-face {font-family:"演示芳华圆-粗";src:url("字体文件/演示字体/演示芳华圆-粗.ttf");}
-@font-face {font-family:"演示芳华圆-细";src:url("字体文件/演示字体/演示芳华圆-细.ttf");}
-@font-face {font-family:"演示芳华圆-超细";src:url("字体文件/演示字体/演示芳华圆-超细.ttf");}
-@font-face {font-family:"演示落月楷";src:url("字体文件/演示字体/演示落月楷.ttf");}
-@font-face {font-family:"演示诗歌宋";src:url("字体文件/演示字体/演示诗歌宋.ttf");}
-@font-face {font-family:"演示踏歌行";src:url("字体文件/演示字体/演示踏歌行.ttf");}
-@font-face {font-family:"演示追光隶";src:url("字体文件/演示字体/演示追光隶.ttf");}
-@font-face {font-family:"演示逍遥黑";src:url("字体文件/演示字体/演示逍遥黑.ttf");}
-@font-face {font-family:"演示通义楷";src:url("字体文件/演示字体/演示通义楷.ttf");}
-@font-face {font-family:"演示金刚体";src:url("字体文件/演示字体/演示金刚体.ttf");}
-@font-face {font-family:"演示金字招牌";src:url("字体文件/演示字体/演示金字招牌.ttf");}
-@font-face {font-family:"演示霸榜";src:url("字体文件/演示字体/演示霸榜.ttf");}
-@font-face {font-family:"演示青年黑";src:url("字体文件/演示字体/演示青年黑.ttf");}
-@font-face {font-family:"演示青花楷";src:url("字体文件/演示字体/演示青花楷.ttf");}
-@font-face {font-family:"演示非宋";src:url("字体文件/演示字体/演示非宋.ttf");}
-@font-face {font-family:"演示非宋体仿古";src:url("字体文件/演示字体/演示非宋体仿古.ttf");}
-@font-face {font-family:"演示魁本楷书";src:url("字体文件/演示字体/演示魁本楷书.ttf");}
-@font-face {font-family:"演示鲲榜";src:url("字体文件/演示字体/演示鲲榜.ttf");}
-</style>
+    /* ===== 鸿雷字体 ===== */
+    @font-face { font-family: "鸿雷元宋简体"; src: url("字体文件/鸿雷字体/鸿雷元宋简体.ttf"); }
+    @font-face { font-family: "鸿雷劲书简体"; src: url("字体文件/鸿雷字体/鸿雷劲书简体.ttf"); }
+    @font-face { font-family: "鸿雷字记-手写百样字集"; src: url("字体文件/鸿雷字体/鸿雷字记-手写百样字集.ttf"); }
+    @font-face { font-family: "鸿雷江湖简体"; src: url("字体文件/鸿雷字体/鸿雷江湖简体.ttf"); }
+    @font-face { font-family: "鸿雷石趣体"; src: url("字体文件/鸿雷字体/鸿雷石趣体.ttf"); }
+    @font-face { font-family: "鸿雷竹林简体"; src: url("字体文件/鸿雷字体/鸿雷竹林简体.ttf"); }
+    @font-face { font-family: "鸿雷舒金体（简+繁）"; src: url("字体文件/鸿雷字体/鸿雷舒金体（简+繁）.ttf"); }
+    @font-face { font-family: "鸿雷顿峰简体"; src: url("字体文件/鸿雷字体/鸿雷顿峰简体.ttf"); }
+  </style>
 </head>
 <body>
-<div class="top-bar">
-  <a href="index.html" class="back-btn">演示模式</a>
-  <div class="search-box">
-    <input id="inputText" placeholder="请输入内容">
+  <div class="top-bar">
+    <a href="index.html" class="back-btn">演示模式</a>
+    <div class="search-box">
+      <input id="inputText" placeholder="请输入内容">
+    </div>
+    <button class="ctrl-btn" id="toggleDark">切换黑/白天模式</button>
+    <button class="ctrl-btn" id="toggleGrid">打开米字格</button>
   </div>
-  <button class="ctrl-btn" id="toggleDark">切换黑/白天模式</button>
-  <button class="ctrl-btn" id="toggleGrid">打开米字格</button>
-</div>
 
-<div class="slider-group">
-  <div class="slider-item">
-    <label>字号</label>
-    <input id="fontSizeSlider" type="range" min="24" max="220" value="72">
-    <span id="fontSizeVal">72px</span>
+  <div class="slider-group">
+    <div class="slider-item">
+      <label>字号</label>
+      <input id="fontSizeSlider" type="range" min="24" max="220" value="72">
+      <span id="fontSizeVal">72px</span>
+    </div>
+    <div class="slider-item">
+      <label>字间距</label>
+      <input id="charSpacingSlider" type="range" min="0" max="80" value="0">
+      <span id="charSpacingVal">0px</span>
+    </div>
   </div>
-  <div class="slider-item">
-    <label>字间距</label>
-    <input id="charSpacingSlider" type="range" min="0" max="80" value="0">
-    <span id="charSpacingVal">0px</span>
-  </div>
-</div>
 
-<div id="previewWrap"></div>
+  <div id="previewWrap"></div>
 
-<script>
-const fontList = [
-{name:"兵克侠客体",family:"兵克侠客体"},
-{name:"兵克元气体",family:"兵克元气体"},
-{name:"兵克创想黑",family:"兵克创想黑"},
-{name:"兵克厚黑体",family:"兵克厚黑体"},
-{name:"兵克古意宋",family:"兵克古意宋"},
-{name:"兵克古风体",family:"兵克古风体"},
-{name:"兵克喜刷刷",family:"兵克喜刷刷"},
-{name:"兵克坚黑体",family:"兵克坚黑体"},
-{name:"兵克威武体",family:"兵克威武体"},
-{name:"兵克战甲体",family:"兵克战甲体"},
-{name:"兵克星耀体",family:"兵克星耀体"},
-{name:"兵克有点逗",family:"兵克有点逗"},
-{name:"兵克未来体",family:"兵克未来体"},
-{name:"兵克朴素楷",family:"兵克朴素楷"},
-{name:"兵克柔书体",family:"兵克柔书体"},
-{name:"兵克柔黑体",family:"兵克柔黑体"},
-{name:"兵克楷黑体",family:"兵克楷黑体"},
-{name:"兵克泰山体",family:"兵克泰山体"},
-{name:"兵克淘气体",family:"兵克淘气体"},
-{name:"兵克清秀体",family:"兵克清秀体"},
-{name:"兵克清闲体",family:"兵克清闲体"},
-{name:"兵克烟云体",family:"兵克烟云体"},
-{name:"兵克热烈体",family:"兵克热烈体"},
-{name:"兵克甜心圆",family:"兵克甜心圆"},
-{name:"兵克真给隶",family:"兵克真给隶"},
-{name:"兵克稚趣体",family:"兵克稚趣体"},
-{name:"兵克笨笨体",family:"兵克笨笨体"},
-{name:"兵克美味体",family:"兵克美味体"},
-{name:"兵克自在宋",family:"兵克自在宋"},
-{name:"兵克臻美隶",family:"兵克臻美隶"},
-{name:"兵克英雄体",family:"兵克英雄体"},
-{name:"兵克行江湖",family:"兵克行江湖"},
-{name:"兵克躺平体",family:"兵克躺平体"},
-{name:"兵克轻柔体",family:"兵克轻柔体"},
-{name:"兵克逍遥体",family:"兵克逍遥体"},
-{name:"兵克锐黑体",family:"兵克锐黑体"},
-{name:"兵克雷霆体",family:"兵克雷霆体"},
-{name:"兵克青年体",family:"兵克青年体"},
-{name:"兵克高级黑",family:"兵克高级黑"},
-{name:"兵克高雅宋",family:"兵克高雅宋"},
-{name:"吉祥如意体",family:"吉祥如意体"},
-{name:"鸿雷元宋简体",family:"鸿雷元宋简体"},
-{name:"鸿雷劲书简体",family:"鸿雷劲书简体"},
-{name:"鸿雷字记-手写百样字集",family:"鸿雷字记-手写百样字集"},
-{name:"鸿雷文艺简体",family:"鸿雷文艺简体"},
-{name:"鸿雷江湖简体",family:"鸿雷江湖简体"},
-{name:"鸿雷石趣体",family:"鸿雷石趣体"},
-{name:"鸿雷竹林简体",family:"鸿雷竹林简体"},
-{name:"鸿雷舒金体（简+繁）",family:"鸿雷舒金体（简+繁）"},
-{name:"鸿雷顿峰简体",family:"鸿雷顿峰简体"},
-{name:"波西米亚狂想黑",family:"波西米亚狂想黑"},
-{name:"演示云顶黑",family:"演示云顶黑"},
-{name:"演示佛系体",family:"演示佛系体"},
-{name:"演示光华楷",family:"演示光华楷"},
-{name:"演示光芒体",family:"演示光芒体"},
-{name:"演示写意楷",family:"演示写意楷"},
-{name:"演示决胜体",family:"演示决胜体"},
-{name:"演示刀刻黑",family:"演示刀刻黑"},
-{name:"演示创黑",family:"演示创黑"},
-{name:"演示创黑FLY",family:"演示创黑FLY"},
-{name:"演示古风宋",family:"演示古风宋"},
-{name:"演示古风宋温润版",family:"演示古风宋温润版"},
-{name:"演示墩墩黑",family:"演示墩墩黑"},
-{name:"演示复古基本宋",family:"演示复古基本宋"},
-{name:"演示夏行楷",family:"演示夏行楷"},
-{name:"演示多福体",family:"演示多福体"},
-{name:"演示天真宋",family:"演示天真宋"},
-{name:"演示宁缺体-怀旧版",family:"演示宁缺体-怀旧版"},
-{name:"演示宁缺体",family:"演示宁缺体"},
-{name:"演示少年行",family:"演示少年行"},
-{name:"演示开门隶",family:"演示开门隶"},
-{name:"演示心情体",family:"演示心情体"},
-{name:"演示悠然小楷",family:"演示悠然小楷"},
-{name:"演示拙黑",family:"演示拙黑"},
-{name:"演示文艺宋",family:"演示文艺宋"},
-{name:"演示新手书",family:"演示新手书"},
-{name:"演示春风楷",family:"演示春风楷"},
-{name:"演示晚风楷",family:"演示晚风楷"},
-{name:"演示汉楷宋",family:"演示汉楷宋"},
-{name:"演示流云楷",family:"演示流云楷"},
-{name:"演示温暖隶",family:"演示温暖隶"},
-{name:"演示白菜体",family:"演示白菜体"},
-{name:"演示真楷",family:"演示真楷"},
-{name:"演示祥云",family:"演示祥云"},
-{name:"演示秀宋-中粗",family:"演示秀宋-中粗"},
-{name:"演示秀宋-普",family:"演示秀宋-普"},
-{name:"演示秀宋-极粗",family:"演示秀宋-极粗"},
-{name:"演示秀宋-细",family:"演示秀宋-细"},
-{name:"演示秀宋-超细",family:"演示秀宋-超细"},
-{name:"演示秋鸿楷",family:"演示秋鸿楷"},
-{name:"演示童真体",family:"演示童真体"},
-{name:"演示经集楷",family:"演示经集楷"},
-{name:"演示综艺黑",family:"演示综艺黑"},
-{name:"演示舍得楷",family:"演示舍得楷"},
-{name:"演示芳华圆-普",family:"演示芳华圆-普"},
-{name:"演示芳华圆-粗",family:"演示芳华圆-粗"},
-{name:"演示芳华圆-细",family:"演示芳华圆-细"},
-{name:"演示芳华圆-超细",family:"演示芳华圆-超细"},
-{name:"演示落月楷",family:"演示落月楷"},
-{name:"演示诗歌宋",family:"演示诗歌宋"},
-{name:"演示踏歌行",family:"演示踏歌行"},
-{name:"演示追光隶",family:"演示追光隶"},
-{name:"演示逍遥黑",family:"演示逍遥黑"},
-{name:"演示通义楷",family:"演示通义楷"},
-{name:"演示金刚体",family:"演示金刚体"},
-{name:"演示金字招牌",family:"演示金字招牌"},
-{name:"演示霸榜",family:"演示霸榜"},
-{name:"演示青年黑",family:"演示青年黑"},
-{name:"演示青花楷",family:"演示青花楷"},
-{name:"演示非宋",family:"演示非宋"},
-{name:"演示非宋体仿古",family:"演示非宋体仿古"},
-{name:"演示魁本楷书",family:"演示魁本楷书"},
-{name:"演示鲲榜",family:"演示鲲榜"},
-];
+  <script>
+    // ===== 字体清单（严格按照最新列表） =====
+    const fontList = [
+      // 兵克
+      { name: "吉祥如意体", family: "吉祥如意体" },
+      { name: "兵克笨笨体", family: "兵克笨笨体" },
+      { name: "兵克美味体", family: "兵克美味体" },
+      { name: "兵克自在宋", family: "兵克自在宋" },
+      { name: "兵克臻美隶", family: "兵克臻美隶" },
+      { name: "兵克英雄体", family: "兵克英雄体" },
+      { name: "兵克躺平体", family: "兵克躺平体" },
+      { name: "兵克轻柔体", family: "兵克轻柔体" },
+      { name: "兵克逍遥体", family: "兵克逍遥体" },
+      { name: "兵克锐黑体", family: "兵克锐黑体" },
+      { name: "兵克雷霆体", family: "兵克雷霆体" },
+      { name: "兵克青年体", family: "兵克青年体" },
+      { name: "兵克高级黑", family: "兵克高级黑" },
+      { name: "兵克高雅宋", family: "兵克高雅宋" },
+      { name: "兵克朴素楷", family: "兵克朴素楷" },
+      { name: "兵克柔书体", family: "兵克柔书体" },
+      { name: "兵克柔黑体", family: "兵克柔黑体" },
+      { name: "兵克楷黑体", family: "兵克楷黑体" },
+      { name: "兵克泰山体", family: "兵克泰山体" },
+      { name: "兵克淘气体", family: "兵克淘气体" },
+      { name: "兵克清秀体", family: "兵克清秀体" },
+      { name: "兵克清闲体", family: "兵克清闲体" },
+      { name: "兵克烟云体", family: "兵克烟云体" },
+      { name: "兵克热烈体", family: "兵克热烈体" },
+      { name: "兵克甜心圆", family: "兵克甜心圆" },
+      { name: "兵克真给隶", family: "兵克真给隶" },
+      { name: "兵克稚趣体", family: "兵克稚趣体" },
+      { name: "兵克侠客体", family: "兵克侠客体" },
+      { name: "兵克元气体", family: "兵克元气体" },
+      { name: "兵克创想黑", family: "兵克创想黑" },
+      { name: "兵克厚黑体", family: "兵克厚黑体" },
+      { name: "兵克古意宋", family: "兵克古意宋" },
+      { name: "兵克古风体", family: "兵克古风体" },
+      { name: "兵克喜刷刷", family: "兵克喜刷刷" },
+      { name: "兵克坚黑体", family: "兵克坚黑体" },
+      { name: "兵克威武体", family: "兵克威武体" },
+      { name: "兵克战甲体", family: "兵克战甲体" },
+      { name: "兵克有点逗", family: "兵克有点逗" },
+      { name: "兵克未来体", family: "兵克未来体" },
 
-const inputDom=document.getElementById("inputText");
-const previewWrap=document.getElementById("previewWrap");
-const toggleDarkBtn=document.getElementById("toggleDark");
-const toggleGridBtn=document.getElementById("toggleGrid");
-const fontSizeSlider=document.getElementById("fontSizeSlider");
-const fontSizeVal=document.getElementById("fontSizeVal");
-const charSpacingSlider=document.getElementById("charSpacingSlider");
-const charSpacingVal=document.getElementById("charSpacingVal");
+      // 演示
+      { name: "演示霸榜", family: "演示霸榜" },
+      { name: "演示青年黑", family: "演示青年黑" },
+      { name: "演示青花楷", family: "演示青花楷" },
+      { name: "演示非宋", family: "演示非宋" },
+      { name: "演示魁本楷书", family: "演示魁本楷书" },
+      { name: "演示鲲榜", family: "演示鲲榜" },
+      { name: "鸿雷顿峰简体", family: "鸿雷顿峰简体" },
+      { name: "演示经集楷", family: "演示经集楷" },
+      { name: "演示舍得楷", family: "演示舍得楷" },
+      { name: "演示芳华圆-普", family: "演示芳华圆-普" },
+      { name: "演示芳华圆-粗", family: "演示芳华圆-粗" },
+      { name: "演示芳华圆-细", family: "演示芳华圆-细" },
+      { name: "演示芳华圆-超细", family: "演示芳华圆-超细" },
+      { name: "演示落月楷", family: "演示落月楷" },
+      { name: "演示诗歌宋", family: "演示诗歌宋" },
+      { name: "演示踏歌行", family: "演示踏歌行" },
+      { name: "演示追光隶", family: "演示追光隶" },
+      { name: "演示通义楷", family: "演示通义楷" },
+      { name: "演示金刚体", family: "演示金刚体" },
+      { name: "演示金字招牌", family: "演示金字招牌" },
+      { name: "演示汉楷宋", family: "演示汉楷宋" },
+      { name: "演示流云楷", family: "演示流云楷" },
+      { name: "演示温暖隶", family: "演示温暖隶" },
+      { name: "演示白菜体", family: "演示白菜体" },
+      { name: "演示真楷", family: "演示真楷" },
+      { name: "演示祥云", family: "演示祥云" },
+      { name: "演示秀宋-中粗", family: "演示秀宋-中粗" },
+      { name: "演示秀宋-普", family: "演示秀宋-普" },
+      { name: "演示秀宋-极粗", family: "演示秀宋-极粗" },
+      { name: "演示秀宋-细", family: "演示秀宋-细" },
+      { name: "演示秀宋-超细", family: "演示秀宋-超细" },
+      { name: "演示秋鸿楷", family: "演示秋鸿楷" },
+      { name: "演示童真体", family: "演示童真体" },
+      { name: "演示复古基本宋", family: "演示复古基本宋" },
+      { name: "演示夏行楷", family: "演示夏行楷" },
+      { name: "演示多福体", family: "演示多福体" },
+      { name: "演示天真宋", family: "演示天真宋" },
+      { name: "演示宁缺体-怀旧版", family: "演示宁缺体-怀旧版" },
+      { name: "演示宁缺体", family: "演示宁缺体" },
+      { name: "演示少年行", family: "演示少年行" },
+      { name: "演示开门隶", family: "演示开门隶" },
+      { name: "演示心情体", family: "演示心情体" },
+      { name: "演示悠然小楷", family: "演示悠然小楷" },
+      { name: "演示文艺宋", family: "演示文艺宋" },
+      { name: "演示春风楷", family: "演示春风楷" },
+      { name: "演示晚风楷", family: "演示晚风楷" },
+      { name: "波西米亚狂想黑", family: "波西米亚狂想黑" },
+      { name: "演示云顶黑", family: "演示云顶黑" },
+      { name: "演示佛系体", family: "演示佛系体" },
+      { name: "演示光华楷", family: "演示光华楷" },
+      { name: "演示写意楷", family: "演示写意楷" },
+      { name: "演示决胜体", family: "演示决胜体" },
+      { name: "演示刀刻黑", family: "演示刀刻黑" },
+      { name: "演示创黑", family: "演示创黑" },
+      { name: "演示创黑FLY", family: "演示创黑FLY" },
+      { name: "演示古风宋", family: "演示古风宋" },
+      { name: "演示古风宋温润版", family: "演示古风宋温润版" },
+      { name: "演示墩墩黑", family: "演示墩墩黑" },
 
-let darkOn=false;
-let gridOn=false;
-let currentFontSize=72;
-let currentCharSpacing=0;
-let downloading=false;
+      // 鸿雷
+      { name: "鸿雷元宋简体", family: "鸿雷元宋简体" },
+      { name: "鸿雷劲书简体", family: "鸿雷劲书简体" },
+      { name: "鸿雷字记-手写百样字集", family: "鸿雷字记-手写百样字集" },
+      { name: "鸿雷江湖简体", family: "鸿雷江湖简体" },
+      { name: "鸿雷石趣体", family: "鸿雷石趣体" },
+      { name: "鸿雷竹林简体", family: "鸿雷竹林简体" },
+      { name: "鸿雷舒金体（简+繁）", family: "鸿雷舒金体（简+繁）" },
+      { name: "鸿雷顿峰简体", family: "鸿雷顿峰简体" }
+    ];
 
-function setCssVar(){
-  fontSizeVal.textContent=currentFontSize+"px";
-  charSpacingVal.textContent=currentCharSpacing+"px";
-}
+    const inputDom = document.getElementById("inputText");
+    const previewWrap = document.getElementById("previewWrap");
+    const toggleDarkBtn = document.getElementById("toggleDark");
+    const toggleGridBtn = document.getElementById("toggleGrid");
+    const fontSizeSlider = document.getElementById("fontSizeSlider");
+    const fontSizeVal = document.getElementById("fontSizeVal");
+    const charSpacingSlider = document.getElementById("charSpacingSlider");
+    const charSpacingVal = document.getElementById("charSpacingVal");
 
-async function downloadCard(elem,fontName){
-  if(downloading)return;
-  downloading=true;
-  const clone=elem.cloneNode(true);
-  clone.querySelector(".font-name-row").remove();
-  clone.style.background="transparent";
-  clone.style.position="absolute";
-  clone.style.left="-9999px";
-  document.body.appendChild(clone);
-  const canvas=await html2canvas(clone,{
-    backgroundColor:null,
-    useCORS:true,
-    scale:2
-  });
-  document.body.removeChild(clone);
-  const link=document.createElement("a");
-  link.download=fontName+".png";
-  link.href=canvas.toDataURL("image/png");
-  link.click();
-  downloading=false;
-}
+    let darkOn = false;
+    let gridOn = false;
+    let currentFontSize = 72;
+    let currentCharSpacing = 0;
+    let downloading = false;
 
-function splitTextSpan(text,spacePx){
-  let html="";
-  const half=spacePx/2;
-  for(let i=0;i<text.length;i++){
-    html+=`<span style="margin-left:${half}px;margin-right:${half}px">${text[i]}</span>`;
-  }
-  return html;
-}
+    function setCssVar() {
+      fontSizeVal.textContent = currentFontSize + "px";
+      charSpacingVal.textContent = currentCharSpacing + "px";
+    }
 
-function renderPreview(text){
-  if(!text.trim()){
-    previewWrap.innerHTML="<div style='color:#999'>请在上方输入预览文字</div>";
-    return;
-  }
-  const len=text.length;
-  let layoutClass;
-  if(len===1){
-    layoutClass="layout-square";
-  }else if(len===2){
-    layoutClass="layout-rect";
-  }else{
-    layoutClass="layout-row";
-  }
-  let html=`<div class="${layoutClass} ${gridOn?'mi-grid-on':''}">`;
-  fontList.forEach(font=>{
-    const spanHtml=splitTextSpan(text,currentCharSpacing);
-    html+=`
-      <div class="item-card">
-        <div class="preview-text-wrap">
-          <div style="font-family:'${font.family}';font-size:${currentFontSize}px;line-height:1;display:flex;align-items:center;justify-content:center">${spanHtml}</div>
-        </div>
-        <div class="font-name-row">
-          <span class="font-name">${font.name}</span>
-          <button class="download-btn" data-font="${font.name}">↓</button>
-        </div>
-      </div>
-    `;
-  });
-  html+="</div>";
-  previewWrap.innerHTML=html;
-  document.querySelectorAll(".download-btn").forEach(btn=>{
-    btn.onclick=(e)=>{
-      e.stopPropagation();
-      const card=e.target.closest(".item-card");
-      const fname=e.target.dataset.font;
-      downloadCard(card,fname);
+    async function downloadCard(elem, fontName) {
+      if (downloading) return;
+      downloading = true;
+      const clone = elem.cloneNode(true);
+      clone.querySelector(".font-name-row").remove();
+      clone.style.background = "transparent";
+      clone.style.position = "absolute";
+      clone.style.left = "-9999px";
+      document.body.appendChild(clone);
+      const canvas = await html2canvas(clone, {
+        backgroundColor: null,
+        useCORS: true,
+        scale: 2
+      });
+      document.body.removeChild(clone);
+      const link = document.createElement("a");
+      link.download = fontName + ".png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+      downloading = false;
+    }
+
+    function splitTextSpan(text, spacePx) {
+      let html = "";
+      const half = spacePx / 2;
+      for (let i = 0; i < text.length; i++) {
+        html += `<span style="margin-left:${half}px;margin-right:${half}px">${text[i]}</span>`;
+      }
+      return html;
+    }
+
+    function renderPreview(text) {
+      if (!text.trim()) {
+        previewWrap.innerHTML = "<div style='color:#999'>请在上方输入预览文字</div>";
+        return;
+      }
+      const len = text.length;
+      let layoutClass;
+      if (len === 1) layoutClass = "layout-square";
+      else if (len === 2) layoutClass = "layout-rect";
+      else layoutClass = "layout-row";
+
+      let html = `<div class="${layoutClass} ${gridOn ? 'mi-grid-on' : ''}">`;
+      fontList.forEach(font => {
+        const spanHtml = splitTextSpan(text, currentCharSpacing);
+        html += `
+          <div class="item-card">
+            <div class="preview-text-wrap">
+              <div style="font-family:'${font.family}';font-size:${currentFontSize}px;line-height:1;display:flex;align-items:center;justify-content:center">${spanHtml}</div>
+            </div>
+            <div class="font-name-row">
+              <span class="font-name">${font.name}</span>
+              <button class="download-btn" data-font="${font.name}">↓</button>
+            </div>
+          </div>
+        `;
+      });
+      html += "</div>";
+      previewWrap.innerHTML = html;
+
+      document.querySelectorAll(".download-btn").forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          const card = e.target.closest(".item-card");
+          const fname = e.target.dataset.font;
+          downloadCard(card, fname);
+        };
+      });
+    }
+
+    inputDom.addEventListener("input", (e) => {
+      renderPreview(e.target.value.trim());
+    });
+
+    toggleDarkBtn.onclick = () => {
+      darkOn = !darkOn;
+      document.body.classList.toggle("dark-mode", darkOn);
     };
-  });
-}
 
-inputDom.addEventListener("input",(e)=>{
-  renderPreview(e.target.value.trim());
-});
-toggleDarkBtn.onclick=()=>{
-  darkOn=!darkOn;
-  document.body.classList.toggle("dark-mode",darkOn);
-};
-toggleGridBtn.onclick=()=>{
-  gridOn=!gridOn;
-  toggleGridBtn.innerText=gridOn?"关闭米字格":"打开米字格";
-  if(inputDom.value.trim()) renderPreview(inputDom.value.trim());
-};
-fontSizeSlider.oninput=()=>{
-  currentFontSize=Number(fontSizeSlider.value);
-  setCssVar();
-  if(inputDom.value.trim()) renderPreview(inputDom.value.trim());
-};
-charSpacingSlider.oninput=()=>{
-  currentCharSpacing=Number(charSpacingSlider.value);
-  setCssVar();
-  if(inputDom.value.trim()) renderPreview(inputDom.value.trim());
-};
-setCssVar();
-</script>
+    toggleGridBtn.onclick = () => {
+      gridOn = !gridOn;
+      toggleGridBtn.innerText = gridOn ? "关闭米字格" : "打开米字格";
+      if (inputDom.value.trim()) renderPreview(inputDom.value.trim());
+    };
+
+    fontSizeSlider.oninput = () => {
+      currentFontSize = Number(fontSizeSlider.value);
+      setCssVar();
+      if (inputDom.value.trim()) renderPreview(inputDom.value.trim());
+    };
+
+    charSpacingSlider.oninput = () => {
+      currentCharSpacing = Number(charSpacingSlider.value);
+      setCssVar();
+      if (inputDom.value.trim()) renderPreview(inputDom.value.trim());
+    };
+
+    setCssVar();
+  </script>
 </body>
 </html>
