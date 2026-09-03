@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>字体工坊</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.85em' font-size='85' font-family='serif'>✍️</text></svg>">
     <style>
@@ -19,11 +19,99 @@
             color: #fff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             overflow: hidden;
+            touch-action: none;
         }
+
+        /* ===== 密码锁屏 ===== */
+        #lockScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 13, 13, 0.97);
+            z-index: 999999999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #lockScreen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        #lockScreen .lock-box {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 40px 48px 36px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.9);
+        }
+        #lockScreen .lock-box .lock-icon {
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+        #lockScreen .lock-box h2 {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 6px;
+        }
+        #lockScreen .lock-box .lock-sub {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+        #lockScreen .lock-box .lock-input-group {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        #lockScreen .lock-box input[type="password"] {
+            background: #0d0d0d;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 16px;
+            width: 160px;
+            outline: none;
+        }
+        #lockScreen .lock-box input[type="password"]:focus {
+            border-color: #666;
+        }
+        #lockScreen .lock-box .lock-btn {
+            background: #2a6b3a;
+            border: none;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        #lockScreen .lock-box .lock-btn:hover {
+            background: #3a8a4a;
+        }
+        #lockScreen .lock-box .lock-error {
+            color: #ff6b6b;
+            font-size: 12px;
+            margin-top: 12px;
+            min-height: 20px;
+        }
+
         .main-wrapper {
             display: flex;
             flex: 1;
             overflow: hidden;
+            touch-action: none;
         }
         .content-area {
             flex: 1;
@@ -31,6 +119,7 @@
             flex-direction: column;
             overflow: hidden;
             min-width: 0;
+            touch-action: none;
         }
 
         .toolbar {
@@ -40,13 +129,19 @@
             display: flex;
             gap: 4px;
             align-items: center;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             flex-shrink: 0;
             z-index: 100;
             min-height: 36px;
             max-height: 44px;
-            overflow-y: auto;
+            overflow-x: auto;
+            overflow-y: hidden;
             position: relative;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .toolbar::-webkit-scrollbar {
+            display: none;
         }
         .toolbar input,
         .toolbar select {
@@ -57,6 +152,7 @@
             border-radius: 3px;
             font-size: 11px;
             height: 24px;
+            flex-shrink: 0;
         }
         .toolbar select {
             cursor: pointer;
@@ -75,11 +171,13 @@
             font-size: 10px;
             margin-right: 1px;
             font-weight: 500;
+            flex-shrink: 0;
         }
         .toolbar .sep {
             color: #333;
             font-size: 10px;
             margin: 0 2px;
+            flex-shrink: 0;
         }
 
         .option-btn {
@@ -102,6 +200,9 @@
             color: #fff;
             border-color: #555;
         }
+        .option-btn:active {
+            transform: scale(0.95);
+        }
 
         .toolbar-right {
             display: flex;
@@ -119,6 +220,7 @@
         .toolbar-font-selector {
             position: relative;
             display: inline-block;
+            flex-shrink: 0;
         }
         .toolbar-font-selector .font-toggle {
             background: #1a1a1a;
@@ -237,6 +339,7 @@
             text-overflow: ellipsis;
             transition: all 0.15s;
             border-left: 2px solid transparent;
+            -webkit-tap-highlight-color: transparent;
         }
         .font-sidebar .sidebar-item:hover {
             background: rgba(255, 255, 255, 0.04);
@@ -298,11 +401,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            -webkit-tap-highlight-color: transparent;
         }
         .folder-panel .folder-item:hover {
             background: #2a2a2a;
             border-color: #555;
             color: #fff;
+        }
+        .folder-panel .folder-item:active {
+            transform: scale(0.97);
         }
         .folder-panel .folder-item .count {
             color: #555;
@@ -332,6 +439,7 @@
             display: inline-block;
             vertical-align: middle;
             z-index: 10;
+            flex-shrink: 0;
         }
         .text-input-wrapper input[type="text"] {
             width: 100%;
@@ -365,6 +473,9 @@
         }
         .text-input-wrapper .text-btn:hover {
             color: #aaa;
+        }
+        .text-input-wrapper .text-btn:active {
+            transform: translateY(-50%) scale(0.9);
         }
 
         .text-edit-overlay {
@@ -468,6 +579,7 @@
             overflow: hidden;
             background: #0d0d0d;
             position: relative;
+            touch-action: none;
         }
         #previewContainer .bg-layer {
             position: absolute;
@@ -515,6 +627,9 @@
             white-space: pre-wrap;
             z-index: 1;
             position: relative;
+            touch-action: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         .preview-placeholder {
@@ -533,6 +648,7 @@
             position: relative;
             display: inline-block;
             z-index: 99999;
+            flex-shrink: 0;
         }
         .download-btn {
             background: #2a6b3a;
@@ -543,9 +659,13 @@
             cursor: pointer;
             font-size: 11px;
             height: 24px;
+            flex-shrink: 0;
         }
         .download-btn:hover {
             background: #3a8a4a;
+        }
+        .download-btn:active {
+            transform: scale(0.92);
         }
         .download-menu {
             display: none;
@@ -568,10 +688,14 @@
             color: #ccc;
             font-size: 12px;
             white-space: nowrap;
+            -webkit-tap-highlight-color: transparent;
         }
         .download-menu .menu-item:hover {
             background: #2a2a2a;
             color: #fff;
+        }
+        .download-menu .menu-item:active {
+            background: #3a3a3a;
         }
         .download-menu .divider {
             height: 1px;
@@ -595,6 +719,9 @@
             color: #fff;
             border-color: #555;
         }
+        .info-btn:active {
+            transform: scale(0.95);
+        }
 
         .compare-btn {
             background: #2a3a2a;
@@ -611,6 +738,9 @@
             background: #3a4a3a;
             color: #fff;
             border-color: #555;
+        }
+        .compare-btn:active {
+            transform: scale(0.95);
         }
 
         .info-overlay {
@@ -670,6 +800,7 @@
         .bg-upload-wrapper {
             position: relative;
             display: inline-block;
+            flex-shrink: 0;
         }
         .bg-upload-btn {
             background: #2a2a4a;
@@ -680,6 +811,7 @@
             cursor: pointer;
             font-size: 11px;
             height: 24px;
+            flex-shrink: 0;
         }
         .bg-upload-btn:hover {
             background: #3a3a5a;
@@ -690,6 +822,9 @@
             background: #4a3a2a;
             border-color: #8a6a3a;
             color: #ffa500;
+        }
+        .bg-upload-btn:active {
+            transform: scale(0.95);
         }
         .bg-upload-wrapper input[type="file"] {
             display: none;
@@ -705,6 +840,7 @@
             font-size: 10px;
             height: 24px;
             display: none;
+            flex-shrink: 0;
         }
         .reset-btn.show {
             display: inline-block;
@@ -713,6 +849,9 @@
             background: #5a3a3a;
             color: #ff8888;
             border-color: #6a4a4a;
+        }
+        .reset-btn:active {
+            transform: scale(0.92);
         }
 
         .mask-controls {
@@ -725,6 +864,7 @@
             border: 1px solid #333;
             flex-wrap: nowrap;
             height: 24px;
+            flex-shrink: 0;
         }
         .mask-controls.show {
             display: flex;
@@ -788,6 +928,7 @@
             padding: 2px 3px;
             font-size: 11px;
             height: 24px;
+            flex-shrink: 0;
         }
         #fontSize:focus {
             border-color: #666;
@@ -808,52 +949,313 @@
             background: #555;
         }
 
-        @media (max-width: 700px) {
-            .toolbar {
-                max-height: 72px;
-                padding: 3px 5px;
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            body {
+                overflow: hidden;
             }
-            .mask-controls input[type="range"] {
-                width: 35px;
+            .toolbar {
+                max-height: 52px;
+                min-height: 44px;
+                padding: 2px 4px;
+                gap: 2px;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .toolbar::-webkit-scrollbar {
+                display: none;
+            }
+            .toolbar label {
+                font-size: 8px;
+                margin-right: 0;
+                flex-shrink: 0;
+            }
+            .toolbar .sep {
+                display: none;
             }
             .text-input-wrapper {
-                max-width: 80px;
-                min-width: 50px;
+                min-width: 45px;
+                max-width: 60px;
+                flex-shrink: 0;
             }
-            .mask-controls {
+            .text-input-wrapper input[type="text"] {
+                font-size: 8px;
+                padding: 1px 16px 1px 3px;
+                height: 20px;
+            }
+            .text-input-wrapper .text-btn {
+                font-size: 8px;
+                right: 1px;
+                padding: 0 2px;
+            }
+            #fontSize {
+                width: 26px;
+                font-size: 8px;
+                height: 20px;
+                padding: 1px 2px;
+                flex-shrink: 0;
+            }
+            .option-btn, .info-btn, .compare-btn, .bg-upload-btn {
+                font-size: 8px;
+                height: 20px;
                 padding: 1px 4px;
+                flex-shrink: 0;
+            }
+            .download-btn {
+                font-size: 8px;
+                height: 20px;
+                padding: 1px 4px;
+                flex-shrink: 0;
+            }
+            .toolbar-right {
+                margin-left: 0;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
                 gap: 2px;
-            }
-            .mask-controls label {
-                font-size: 8px;
-            }
-            .mask-controls .mask-value {
-                font-size: 8px;
-                min-width: 18px;
-            }
-            .mask-controls input[type="color"] {
-                width: 16px;
-                height: 16px;
-            }
-            .toolbar-font-selector .font-toggle {
-                min-width: 80px;
-                max-width: 120px;
-                font-size: 10px;
-            }
-            .font-sidebar {
-                min-width: 160px;
-                max-width: 200px;
-            }
-            .folder-panel {
-                padding: 16px 20px;
             }
             .toolbar-right .label-current {
                 display: none;
+            }
+            .toolbar-font-selector .font-toggle {
+                min-width: 55px;
+                max-width: 80px;
+                height: 20px;
+                font-size: 8px;
+                padding: 1px 3px;
+                border-radius: 2px;
+            }
+            .toolbar-font-selector .font-toggle .pin-btn {
+                font-size: 8px;
+                padding: 0 1px;
+            }
+            .toolbar-font-selector .font-toggle .arrow {
+                font-size: 6px;
+            }
+            #colorPicker, #bgPicker {
+                width: 14px !important;
+                height: 14px !important;
+                flex-shrink: 0;
+                padding: 0;
+            }
+            .mask-controls {
+                height: 20px;
+                padding: 1px 3px;
+                gap: 2px;
+                flex-shrink: 0;
+            }
+            .mask-controls label {
+                font-size: 7px;
+            }
+            .mask-controls input[type="range"] {
+                width: 25px;
+            }
+            .mask-controls .mask-value {
+                font-size: 7px;
+                min-width: 14px;
+            }
+            .mask-controls input[type="color"] {
+                width: 12px;
+                height: 12px;
+            }
+            .reset-btn {
+                height: 20px;
+                font-size: 7px;
+                padding: 1px 3px;
+            }
+            #previewContainer {
+                padding: 6px;
+            }
+            #previewContent {
+                font-size: 28px;
+                padding: 6px;
+                max-width: 98%;
+                max-height: 72vh;
+                min-height: 30px;
+                touch-action: none;
+                -webkit-user-select: none;
+                user-select: none;
+            }
+            .font-sidebar {
+                min-width: 120px;
+                max-width: 160px;
+                top: 40px;
+            }
+            .font-sidebar .sidebar-item {
+                font-size: 10px;
+                padding: 4px 10px;
+            }
+            .folder-panel {
+                padding: 14px 16px;
+                max-width: 300px;
+                width: 92%;
+            }
+            .folder-panel .folder-title {
+                font-size: 13px;
+            }
+            .folder-panel .folder-item {
+                font-size: 11px;
+                padding: 7px 10px;
+            }
+            .folder-panel .folder-item .count {
+                font-size: 9px;
+            }
+            .download-menu {
+                min-width: 90px;
+            }
+            .download-menu .menu-item {
+                font-size: 10px;
+                padding: 3px 8px;
+            }
+            .info-overlay .info-box {
+                padding: 14px 16px;
+                max-width: 300px;
+            }
+            .text-edit-overlay .edit-box {
+                padding: 12px 14px;
+                max-width: 340px;
+            }
+            .text-edit-overlay .edit-box textarea {
+                font-size: 12px;
+                min-height: 60px;
+            }
+            .lock-box {
+                padding: 28px 24px 28px !important;
+            }
+            .lock-box .lock-icon {
+                font-size: 36px !important;
+            }
+            .lock-box h2 {
+                font-size: 17px !important;
+            }
+            .lock-box input[type="password"] {
+                width: 120px !important;
+                font-size: 14px !important;
+                padding: 6px 10px !important;
+            }
+            .lock-box .lock-btn {
+                font-size: 12px !important;
+                padding: 6px 14px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .toolbar {
+                max-height: 44px;
+                min-height: 38px;
+                padding: 1px 3px;
+                gap: 1px;
+            }
+            .text-input-wrapper {
+                min-width: 35px;
+                max-width: 48px;
+            }
+            .text-input-wrapper input[type="text"] {
+                font-size: 7px;
+                padding: 1px 12px 1px 2px;
+                height: 18px;
+            }
+            #fontSize {
+                width: 22px;
+                font-size: 7px;
+                height: 18px;
+            }
+            .option-btn, .info-btn, .compare-btn, .bg-upload-btn {
+                font-size: 7px;
+                height: 18px;
+                padding: 1px 3px;
+            }
+            .download-btn {
+                font-size: 7px;
+                height: 18px;
+                padding: 1px 3px;
+            }
+            .toolbar-font-selector .font-toggle {
+                min-width: 45px;
+                max-width: 60px;
+                height: 18px;
+                font-size: 7px;
+                padding: 1px 2px;
+            }
+            .toolbar-font-selector .font-toggle .pin-btn {
+                font-size: 7px;
+            }
+            .toolbar-font-selector .font-toggle .arrow {
+                font-size: 5px;
+            }
+            #colorPicker, #bgPicker {
+                width: 12px !important;
+                height: 12px !important;
+            }
+            .mask-controls {
+                height: 18px;
+                padding: 0 2px;
+            }
+            .mask-controls input[type="range"] {
+                width: 20px;
+            }
+            .mask-controls .mask-value {
+                font-size: 6px;
+                min-width: 12px;
+            }
+            .mask-controls input[type="color"] {
+                width: 10px;
+                height: 10px;
+            }
+            .reset-btn {
+                height: 18px;
+                font-size: 6px;
+                padding: 0 2px;
+            }
+            #previewContent {
+                font-size: 22px;
+                padding: 4px;
+                max-height: 68vh;
+                min-height: 24px;
+            }
+            .font-sidebar {
+                min-width: 100px;
+                max-width: 140px;
+                top: 36px;
+            }
+            .font-sidebar .sidebar-item {
+                font-size: 9px;
+                padding: 3px 8px;
+            }
+            .folder-panel {
+                padding: 10px 12px;
+                max-width: 260px;
+            }
+            .folder-panel .folder-title {
+                font-size: 12px;
+            }
+            .folder-panel .folder-item {
+                font-size: 10px;
+                padding: 5px 8px;
+            }
+            .folder-panel .folder-item .count {
+                font-size: 8px;
             }
         }
     </style>
 </head>
 <body>
+
+    <!-- ===== 密码锁屏 ===== -->
+    <div id="lockScreen">
+        <div class="lock-box">
+            <div class="lock-icon">🔒</div>
+            <h2>请输入密码</h2>
+            <div class="lock-sub">此工具受密码保护</div>
+            <div class="lock-input-group">
+                <input type="password" id="lockPassword" placeholder="输入密码..." autofocus>
+                <button class="lock-btn" id="lockBtn">解锁</button>
+            </div>
+            <div class="lock-error" id="lockError"></div>
+        </div>
+    </div>
 
     <div class="main-wrapper">
         <div class="content-area">
@@ -989,6 +1391,37 @@
     </div>
 
     <script>
+        // ★★★ 密码保护 ★★★
+        // ⚠️ 请修改下方 '123456' 为您想要的密码
+        var CORRECT_PASSWORD = '123456';
+
+        var lockScreen = document.getElementById('lockScreen');
+        var lockPassword = document.getElementById('lockPassword');
+        var lockBtn = document.getElementById('lockBtn');
+        var lockError = document.getElementById('lockError');
+
+        function tryUnlock() {
+            var input = lockPassword.value.trim();
+            if (input === CORRECT_PASSWORD) {
+                lockScreen.classList.add('hidden');
+                lockError.textContent = '';
+                lockPassword.value = '';
+                setTimeout(function() { document.getElementById('textInput').focus(); }, 300);
+            } else {
+                lockError.textContent = '❌ 密码错误，请重试';
+                lockPassword.value = '';
+                lockPassword.focus();
+                lockPassword.style.borderColor = '#ff6b6b';
+                setTimeout(function() { lockPassword.style.borderColor = ''; }, 500);
+            }
+        }
+
+        lockBtn.onclick = tryUnlock;
+        lockPassword.onkeydown = function(e) {
+            if (e.key === 'Enter') tryUnlock();
+        };
+        setTimeout(function() { lockPassword.focus(); }, 100);
+
         // ★★★ 字体数据（按最新清单精简） ★★★
         var FONT_DATA = {
             '兵克字体': [
@@ -1161,6 +1594,9 @@
             pinned: false,
             hasSelected: false,
             dropOpen: false,
+            touchStartY: 0,
+            touchStartX: 0,
+            isSwiping: false,
         };
 
         // ★★★ 初始化 ★★★
@@ -1171,6 +1607,59 @@
             buildFolderList();
             D.folderPanel.classList.add('active');
             D.folderOverlay.classList.add('active');
+            setupTouchSwipe();
+        }
+
+        // ★★★ 手机触摸滑动切换字体 ★★★
+        function setupTouchSwipe() {
+            var container = D.previewContainer;
+            container.addEventListener('touchstart', function(e) {
+                var touch = e.touches[0];
+                S.touchStartY = touch.clientY;
+                S.touchStartX = touch.clientX;
+                S.isSwiping = false;
+            }, { passive: true });
+
+            container.addEventListener('touchmove', function(e) {
+                if (!S.fonts.length || !S.hasSelected) return;
+                var touch = e.touches[0];
+                var deltaY = touch.clientY - S.touchStartY;
+                var deltaX = touch.clientX - S.touchStartX;
+                if (Math.abs(deltaY) > 20 && Math.abs(deltaY) > Math.abs(deltaX)) {
+                    S.isSwiping = true;
+                    e.preventDefault();
+                    // 显示提示
+                    var direction = deltaY > 0 ? '↓' : '↑';
+                    var font = S.fonts[S.index];
+                    if (font) {
+                        D.currentFontName.textContent = font.name + ' ' + direction;
+                    }
+                }
+            }, { passive: false });
+
+            container.addEventListener('touchend', function(e) {
+                if (!S.isSwiping) return;
+                if (!S.fonts.length || !S.hasSelected) return;
+                var touch = e.changedTouches[0];
+                var deltaY = touch.clientY - S.touchStartY;
+                if (Math.abs(deltaY) > 30) {
+                    var direction = deltaY > 0 ? -1 : 1;
+                    var target = S.index + direction;
+                    if (target < 0) target = S.fonts.length - 1;
+                    if (target >= S.fonts.length) target = 0;
+                    var font = S.fonts[target];
+                    if (font) {
+                        D.currentFontName.textContent = font.name;
+                        forceLoad(target);
+                        // 震动反馈（如果支持）
+                        if (navigator.vibrate) navigator.vibrate(10);
+                    }
+                } else {
+                    var font = S.fonts[S.index];
+                    if (font) D.currentFontName.textContent = font.name;
+                }
+                S.isSwiping = false;
+            }, { passive: true });
         }
 
         function buildFolderList() {
@@ -1692,6 +2181,7 @@
         console.log('✅ 字体工坊已启动');
         console.log('📌 点击📌固定字体列表到右侧');
         console.log('📌 鼠标悬停侧栏字体预览效果，点击切换');
+        console.log('📌 手机上下滑动可切换字体');
         console.log('📌 点击「对比模式」跳转到对比模式.html');
     </script>
 </body>
